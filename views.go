@@ -104,36 +104,31 @@ func viewScoreboard(c *gin.Context) {
 
 	teams, round, err := dbGetScoreboard()
 
-    room := c.Query("room")
-	if room != "" {
-		filteredTeams := []TeamData{}
-		for _, team := range teams {
-			if room == "187" && team.ID >= 1 && team.ID <= 30 {
-				filteredTeams = append(filteredTeams, team)
-			}
-			if room == "188" && team.ID >= 31 && team.ID <= 60 {
-				filteredTeams = append(filteredTeams, team)
-			}
-			if room == "205" && team.ID >= 61 && team.ID <= 90 {
-				filteredTeams = append(filteredTeams, team)
-			}
-			if room == "304" && team.ID >= 91 && team.ID <= 120 {
-				filteredTeams = append(filteredTeams, team)
-			}
-		}
-		teams = filteredTeams
-	}
-	
-	for _, team := range teams {
-		errorPrint(team.ID)
-	}
-
-	for _, team := range teams {
-        errorPrint(team.ID)
-    }
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
+	}
+
+	team_range_start := c.Query("team_range_start")
+	team_range_end := c.Query("team_range_end")
+
+	if team_range_start != "" && team_range_end != "" {
+		lo, errLo := strconv.Atoi(team_range_start)
+		hi, errHi := strconv.Atoi(team_range_end)
+
+		if errLo == nil && errHi == nil {
+			filteredTeams := []TeamData{}
+			for _, team := range teams {
+				if team.ID >= lo && team.ID <= hi {
+					filteredTeams = append(filteredTeams, team)
+				}
+			}
+			teams = filteredTeams
+		}
+	}
+
+	for _, team := range teams {
+		errorPrint(team.ID)
 	}
 
 	services := make([]string, 0)
