@@ -108,13 +108,16 @@ func viewScoreboard(c *gin.Context) {
 	if room != "" {
 		filteredTeams := []TeamData{}
 		for _, team := range teams {
-			if room == "187" && team.ID >= 1 && team.ID <= 8 {
+			if room == "187" && team.ID >= 1 && team.ID <= 30 {
 				filteredTeams = append(filteredTeams, team)
 			}
-			if room == "188" && team.ID >= 9 && team.ID <= 15 {
+			if room == "188" && team.ID >= 31 && team.ID <= 60 {
 				filteredTeams = append(filteredTeams, team)
 			}
-			if room == "260" && team.ID >= 16 && team.ID <= 22 {
+			if room == "205" && team.ID >= 61 && team.ID <= 90 {
+				filteredTeams = append(filteredTeams, team)
+			}
+			if room == "304" && team.ID >= 91 && team.ID <= 120 {
 				filteredTeams = append(filteredTeams, team)
 			}
 		}
